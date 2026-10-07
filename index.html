@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1f7a5a">
+<title>Mis Idiomas</title>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Idiomas">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,800&family=Figtree:wght@500;700&display=swap">
+<style>
+:root{--bg:#f4f5f8;--surface:#fff;--ink:#1d2433;--muted:#667085;--line:#e3e6ee;--accent:#1f7a5a;
+  --display:"Bricolage Grotesque","Avenir Next","Segoe UI",system-ui,sans-serif;--body:"Figtree","Segoe UI",system-ui,sans-serif}
+@media (prefers-color-scheme:dark){:root{--bg:#12151c;--surface:#1b2029;--ink:#eef1f7;--muted:#9aa3b5;--line:#2a313d;--accent:#4cc394;color-scheme:dark}}
+html{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body)}
+main{max-width:560px;margin:0 auto;padding-inline:16px;padding-block:28px 40px;display:flex;flex-direction:column;gap:14px}
+h1{font-family:var(--display);font-weight:800;font-size:2.1rem;margin:0;letter-spacing:-.01em}
+.sub{color:var(--muted);margin:0 0 6px}
+a.card{display:flex;align-items:center;gap:16px;background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:18px;color:var(--ink);text-decoration:none}
+a.card:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.em{font-size:2.6rem;line-height:1;flex:none}
+.card b{display:block;font-family:var(--display);font-size:1.25rem;margin-bottom:3px}
+.card span{color:var(--muted);font-size:.95rem}
+.txt{min-width:0}
+.go{margin-left:auto;font-size:1.6rem;color:var(--accent);flex:none}
+.status{font-size:.88rem;color:var(--muted);padding:10px 2px}
+.install{border:0;border-radius:14px;padding:14px;background:var(--accent);color:#fff;font:700 1rem var(--body);cursor:pointer}
+</style>
+</head>
+<body>
+<main>
+  <h1>Mis idiomas</h1>
+  <p class="sub">Italiano, francés y español, con voz y sin internet.</p>
+  <a class="card" href="frases.html"><span class="em">💬</span><div class="txt"><b>Frases básicas</b><span>501 frases con pronunciación en 🇮🇹 🇫🇷 🇲🇽</span></div><span class="go">›</span></a>
+  <a class="card" href="palabras-es.html"><span class="em">🧸</span><div class="txt"><b>Mis primeras palabras</b><span>469 palabras con dibujo, en español</span></div><span class="go">›</span></a>
+  <a class="card" href="parole-it.html"><span class="em">🇮🇹</span><div class="txt"><b>Le mie prime parole</b><span>469 palabras con dibujo, en italiano</span></div><span class="go">›</span></a>
+  <button class="install" id="install" hidden>📲 Instalar en este teléfono</button>
+  <div class="status" id="status"></div>
+</main>
+<script>
+const st = document.getElementById('status');
+if ('serviceWorker' in navigator) {
+  st.textContent = 'Preparando para usar sin internet…';
+  navigator.serviceWorker.register('sw.js').then(() => navigator.serviceWorker.ready)
+    .then(() => { st.textContent = '✅ Lista para usar sin internet.'; })
+    .catch(() => { st.textContent = 'Necesitas internet la primera vez que la abras.'; });
+}
+let prompt;
+window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); prompt = e; document.getElementById('install').hidden = false; });
+document.getElementById('install').onclick = () => { if (prompt) { prompt.prompt(); prompt = null; document.getElementById('install').hidden = true; } };
+</script>
+</body>
+</html>
